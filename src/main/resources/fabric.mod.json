@@ -1,37 +1,30 @@
 {
   "schemaVersion": 1,
-  "id": "modid",
+  "id": "multi_item_lin",
   "version": "${version}",
-
-  "name": "Example Mod",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "name": "Multi Item Lin",
+  "description": "A small library that easily allows for multiple types of items for Minecraft's more hardcoded items.\n\nThis library will be depricated once Fabric API includes better versions of this library. This library does not encompass all uses cases for item, but it does with most of them to make the items work with the players.",
   "authors": [
-    "Me!"
+    "OroArmor"
   ],
   "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
+    "sources": "https://github.com/OroArmor/Multi-Item-Lib/",
+    "issues": "https://github.com/OroArmor/Multi-Item-Lib/issues"
   },
-
   "license": "CC0-1.0",
-  "icon": "assets/modid/icon.png",
-
+  "icon": "assets/multi-item-lib/icon.png",
   "environment": "*",
   "entrypoints": {
-    "main": [
-      "net.fabricmc.example.ExampleMod"
-    ]
   },
   "mixins": [
-    "modid.mixins.json"
+    "multi-item-lib.mixins.json"
   ],
-
   "depends": {
     "fabricloader": ">=0.7.4",
     "fabric": "*",
     "minecraft": "1.16.x"
   },
   "suggests": {
-    "another-mod": "*"
+    "flamingo": "*"
   }
 }
