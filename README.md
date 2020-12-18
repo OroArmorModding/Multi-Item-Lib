@@ -1,9 +1,6 @@
-# Fabric Example Mod
+# Multi Item Lib
 
-## Setup
+A small library that easily allows for multiple types of items for Minecraft's more hardcoded items.
 
-For setup instructions please see the [fabric wiki page](https://fabricmc.net/wiki/tutorial:setup) that relates to the IDE that you are using.
-
-## License
-
-This template is available under the CC0 license. Feel free to learn from it and incorporate it in your own projects.
+This library will be depricated once Fabric API includes better versions of this library.
+This library does not encompass all uses cases for item, but it does with most of them to make the items work with the players.
