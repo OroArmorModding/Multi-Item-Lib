@@ -12,6 +12,7 @@
   ],
   "client": [
     "ClientPlayerEntityMixin",
+    "render.CapeFeatureRendererMixin",
     "render.FishingBobberEntityRendererMixin",
     "render.HeldItemRendererMixin",
     "render.ItemRendererMixin",
