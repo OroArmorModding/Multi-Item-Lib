@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "id": "multi_item_lin",
+  "id": "multi_item_lib",
   "version": "${version}",
-  "name": "Multi Item Lin",
-  "description": "A small library that easily allows for multiple types of items for Minecraft's more hardcoded items.\n\nThis library will be depricated once Fabric API includes better versions of this library. This library does not encompass all uses cases for item, but it does with most of them to make the items work with the players.",
+  "name": "Multi Item Lib",
+  "description": "A small library that easily allows for multiple types of items for Minecraft's more hardcoded items.\n\nThis library will be deprecated once Fabric API includes better versions of this library. This library does not encompass all uses cases for item, but it does with most of them to make the items work with the players.",
   "authors": [
     "OroArmor"
   ],

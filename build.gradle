@@ -1,5 +1,6 @@
 plugins {
-	id 'fabric-loom' version '0.5-SNAPSHOT'
+	id 'fabric-loom' version '0.6-SNAPSHOT'
+	id 'com.jfrog.bintray' version "1.8.4"
 	id 'maven-publish'
 }
 
@@ -78,5 +79,22 @@ publishing {
 	// To publish to maven local, no extra repositories are necessary. Just use the task `publishToMavenLocal`.
 	repositories {
 		// See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
+	}
+}
+
+bintray {
+	user = System.getenv('BINTRAY_USER')
+	key = System.getenv('BINTRAY_KEY')
+	publications = ["mavenJava"]
+	publish = true
+	pkg {
+		repo = 'multi-item-lib'
+		name = rootProject.archives_base_name
+		userOrg = "oroarmor"
+		licenses = ['CC0-1.0']
+		vcsUrl = 'https://github.com/OroArmor/Multi-Item-Lib.git'
+		version {
+			name = rootProject.mod_version
+		}
 	}
 }
