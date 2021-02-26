@@ -13,13 +13,8 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(FishingBobberEntity.class)
 public abstract class FishBobberEntityMixin {
 
-    @Redirect(method = "removeIfInvalid", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getItem()Lnet/minecraft/item/Item;", ordinal = 0))
+    @Redirect(method = "removeIfInvalid", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getItem()Lnet/minecraft/item/Item;"))
     private Item replaceGetItem1(ItemStack itemStack, PlayerEntity playerEntity) {
-        return playerEntity.getMainHandStack().getItem() == Items.FISHING_ROD || UniqueItemRegistry.FISHING_ROD.isItemInRegistry(itemStack.getItem()) ? UniqueItemRegistry.FISHING_ROD.getDefaultItem(itemStack.getItem()) : null;
-    }
-
-    @Redirect(method = "removeIfInvalid", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getItem()Lnet/minecraft/item/Item;", ordinal = 1))
-    private Item replaceGetItem2(ItemStack itemStack, PlayerEntity playerEntity) {
-        return playerEntity.getOffHandStack().getItem() == Items.FISHING_ROD || UniqueItemRegistry.FISHING_ROD.isItemInRegistry(itemStack.getItem()) ? UniqueItemRegistry.FISHING_ROD.getDefaultItem(itemStack.getItem()) : null;
+        return UniqueItemRegistry.FISHING_ROD.getDefaultItem(itemStack.getItem());
     }
 }
