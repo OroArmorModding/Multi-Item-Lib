@@ -8,7 +8,8 @@
     "LivingEntityMixin",
     "MobEntityMixin",
     "PlayerEntityMixin",
-    "UnbreakingEnchantmentMixin"
+    "UnbreakingEnchantmentMixin",
+    "entities.FishBobberEntityMixin"
   ],
   "client": [
     "ClientPlayerEntityMixin",
