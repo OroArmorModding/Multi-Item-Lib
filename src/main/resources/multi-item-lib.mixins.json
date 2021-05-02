@@ -4,12 +4,18 @@
   "package": "com.oroarmor.multi_item_lib.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "BeehiveBlockMixin",
     "CrossbowItemMixin",
+    "EfficiencyEnchantmentMixin",
+    "EntityInteractShearsMixin",
+    "FishBobberEntityMixin",
     "LivingEntityMixin",
     "MobEntityMixin",
+    "MooshroomEntityInteractShearsMixin",
     "PlayerEntityMixin",
-    "UnbreakingEnchantmentMixin",
-    "entities.FishBobberEntityMixin"
+    "PumpkinBlockMixin",
+    "TripwireBlockMixin",
+    "UnbreakingEnchantmentMixin"
   ],
   "client": [
     "ClientPlayerEntityMixin",

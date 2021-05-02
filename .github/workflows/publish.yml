@@ -1,10 +1,7 @@
-name: Publish to Bintray
+name: Publish Mod to external sites
 
 on:
-  release:
-    types: [published]
   workflow_dispatch:
-
 
 jobs:
   publish:
@@ -19,8 +16,12 @@ jobs:
           java-version: 1.8
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
-      - name: Build with Gradle
-        run: ./gradlew bintrayUpload --parallel --stacktrace
+      - name: Grant execute permission for .build/deploy.sh
+        run: chmod +x .build/deploy.sh
+      - name: Deploy
+        run: .build/deploy.sh
         env:
-          BINTRAY_USER: oroarmor
-          BINTRAY_KEY: ${{ secrets.BINTRAY_KEY }}
+          GPG_SECRET: ${{ secrets.GPG_SECRET }}
+          CURSE_API_KEY: ${{ secrets.CURSE_API_KEY }}
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_API_KEY }}

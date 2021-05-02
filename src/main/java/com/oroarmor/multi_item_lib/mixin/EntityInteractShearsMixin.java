@@ -29,16 +29,15 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.passive.SheepEntity;
+import net.minecraft.entity.passive.SnowGolemEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-@Mixin(LivingEntity.class)
-public class LivingEntityMixin {
-
-    @Redirect(method = "initAi()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getItem()Lnet/minecraft/item/Item;"))
-    public Item initAi(ItemStack itemStack) {
-        return UniqueItemRegistry.ELYTRA.getDefaultItem(itemStack.getItem());
+@Mixin({SheepEntity.class, SnowGolemEntity.class})
+public class EntityInteractShearsMixin {
+    @Redirect(method = "interactMob", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getItem()Lnet/minecraft/item/Item;"))
+    private Item interactMob(ItemStack stack) {
+        return UniqueItemRegistry.SHEARS.getDefaultItem(stack.getItem());
     }
-
 }

@@ -29,16 +29,16 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.FishingBobberEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-@Mixin(LivingEntity.class)
-public class LivingEntityMixin {
+@Mixin(FishingBobberEntity.class)
+public abstract class FishBobberEntityMixin {
 
-    @Redirect(method = "initAi()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getItem()Lnet/minecraft/item/Item;"))
-    public Item initAi(ItemStack itemStack) {
-        return UniqueItemRegistry.ELYTRA.getDefaultItem(itemStack.getItem());
+    @Redirect(method = "removeIfInvalid", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getItem()Lnet/minecraft/item/Item;"))
+    private Item replaceGetItem1(ItemStack itemStack, PlayerEntity playerEntity) {
+        return UniqueItemRegistry.FISHING_ROD.getDefaultItem(itemStack.getItem());
     }
-
 }
