@@ -3,9 +3,11 @@ buildscript {
 		maven {
 			url "https://plugins.gradle.org/m2/"
 		}
+
 	}
 	dependencies {
 		classpath "org.kohsuke:github-api:1.114"
+		classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.30.0"
 	}
 }
 
@@ -16,6 +18,8 @@ plugins {
 	id "signing"
 	id "maven"
 }
+apply plugin: 'io.codearte.nexus-staging'
+
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
@@ -155,6 +159,12 @@ uploadArchives {
 			}
 		}
 	}
+}
+
+nexusStaging {
+//	serverUrl = "https://s01.oss.sonatype.org/service/local/" //required only for projects registered in Sonatype after 2021-02-24
+	username = "OroArmor"
+	password = project.hasProperty("ossrhPassword") ? project.property("ossrhPassword") : System.getenv("OSSRH_PASSWORD")
 }
 
 task github {

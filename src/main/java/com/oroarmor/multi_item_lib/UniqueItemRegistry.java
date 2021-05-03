@@ -24,28 +24,52 @@
 
 package com.oroarmor.multi_item_lib;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 
+/**
+ * A wrapper class for a set of {@link Item}s.
+ */
 public final class UniqueItemRegistry {
+    /**
+     * The {@link UniqueItemRegistry} for shears. Allows for use on entities and blocks.
+     */
     public static final UniqueItemRegistry SHEARS = new UniqueItemRegistry(Items.SHEARS);
+    /**
+     * The {@link UniqueItemRegistry} for elytra. Allows for fall flying.
+     */
     public static final UniqueItemRegistry ELYTRA = new UniqueItemRegistry(Items.ELYTRA);
+    /**
+     * The {@link UniqueItemRegistry} for fishing rods. Allows for the fishing bobber to work normally and correct rendering.
+     */
     public static final UniqueItemRegistry FISHING_ROD = new UniqueItemRegistry(Items.FISHING_ROD);
+    /**
+     * The {@link UniqueItemRegistry} for shields. Allows for blocking and correct rendering.
+     */
     public static final UniqueItemRegistry SHIELD = new UniqueItemRegistry(Items.SHIELD);
+    /**
+     * The {@link UniqueItemRegistry} for bows. Allows for shooting arrows and correct rendering.
+     */
     public static final UniqueItemRegistry BOW = new UniqueItemRegistry(Items.BOW);
+    /**
+     * The {@link UniqueItemRegistry} for crossbows. Allows for shooting arrows and correct rendering.
+     */
     public static final UniqueItemRegistry CROSSBOW = new UniqueItemRegistry(Items.CROSSBOW);
+    /**
+     * The {@link UniqueItemRegistry} for tridents. Allows for some correct rendering. Mixins will be needed for full correct rendering.
+     */
     public static final UniqueItemRegistry TRIDENT = new UniqueItemRegistry(Items.TRIDENT);
 
-    private final List<Item> itemList;
+    private final Set<Item> itemList;
 
     private final Item defaultItem;
 
     private UniqueItemRegistry(Item defaultItem) {
         this.defaultItem = defaultItem;
-        itemList = new ArrayList<>();
+        itemList = new HashSet<>();
     }
 
     public void addItemToRegistry(Item item) {

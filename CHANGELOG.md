@@ -1,3 +1,6 @@
+Version 1.3.1
+- Javadocs
+----
 Version 1.3.0
 - Add shears
 - Publish to Maven Central instead of Bintray
