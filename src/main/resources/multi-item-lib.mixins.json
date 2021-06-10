@@ -2,7 +2,7 @@
   "required": true,
   "minVersion": "0.8",
   "package": "com.oroarmor.multi_item_lib.mixin",
-  "compatibilityLevel": "JAVA_8",
+  "compatibilityLevel": "JAVA_16",
   "mixins": [
     "BeehiveBlockMixin",
     "EfficiencyEnchantmentMixin",
