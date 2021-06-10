@@ -106,7 +106,7 @@ artifacts {
 publishing {
 	publications {
 		mavenJava(MavenPublication) {
-			artifact jar
+			artifact rootProject.file("build/libs/${project.archives_base_name}-${project.version}.jar")
 			artifact sourcesJar
 			artifact javadocJar
 
