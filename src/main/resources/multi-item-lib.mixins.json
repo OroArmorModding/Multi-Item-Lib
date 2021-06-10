@@ -5,12 +5,10 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "BeehiveBlockMixin",
-    "CrossbowItemMixin",
     "EfficiencyEnchantmentMixin",
     "EntityInteractShearsMixin",
     "FishBobberEntityMixin",
     "LivingEntityMixin",
-    "MobEntityMixin",
     "MooshroomEntityInteractShearsMixin",
     "PlayerEntityMixin",
     "PumpkinBlockMixin",

@@ -40,10 +40,8 @@ import net.minecraft.util.Hand;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-@Environment(EnvType.CLIENT)
 @Mixin(PlayerEntityRenderer.class)
 public class PlayerEntityRendererMixin {
-
     @Inject(method = "getArmPose", at = @At("HEAD"), cancellable = true)
     private static void getArmPose(AbstractClientPlayerEntity abstractClientPlayerEntity, Hand hand, CallbackInfoReturnable<BipedEntityModel.ArmPose> cir) {
         ItemStack itemStack = abstractClientPlayerEntity.getStackInHand(hand);
@@ -51,5 +49,4 @@ public class PlayerEntityRendererMixin {
             cir.setReturnValue(BipedEntityModel.ArmPose.CROSSBOW_HOLD);
         }
     }
-
 }

@@ -35,9 +35,8 @@ import net.minecraft.item.ItemStack;
 
 @Mixin(ClientPlayerEntity.class)
 public class ClientPlayerEntityMixin {
-
-    @Redirect(method = "tickMovement()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getItem()Lnet/minecraft/item/Item;"))
-    public Item tickMovement(ItemStack itemStack) {
-        return UniqueItemRegistry.ELYTRA.getDefaultItem(itemStack.getItem());
+    @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z"))
+    private boolean tickMovement(ItemStack stack, Item isOfItem) {
+        return UniqueItemRegistry.ELYTRA.isItemInRegistry(stack.getItem());
     }
 }

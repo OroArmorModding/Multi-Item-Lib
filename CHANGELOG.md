@@ -1,3 +1,6 @@
+Version 1.3.2
+- Update to Minecraft 1.17
+----
 Version 1.3.1
 - Javadocs
 ----

@@ -35,8 +35,8 @@ import net.minecraft.item.ItemStack;
 
 @Mixin(CapeFeatureRenderer.class)
 public class CapeFeatureRendererMixin {
-    @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getItem()Lnet/minecraft/item/Item;"))
-    public Item redirectCapeBlocks(ItemStack stack) {
-        return UniqueItemRegistry.ELYTRA.getDefaultItem(stack.getItem());
+    @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z"))
+    private boolean render(ItemStack stack, Item isOfItem) {
+        return UniqueItemRegistry.ELYTRA.isItemInRegistry(stack.getItem());
     }
 }

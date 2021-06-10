@@ -35,10 +35,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 @Mixin(FishingBobberEntity.class)
-public abstract class FishBobberEntityMixin {
-
-    @Redirect(method = "removeIfInvalid", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getItem()Lnet/minecraft/item/Item;"))
-    private Item replaceGetItem1(ItemStack itemStack, PlayerEntity playerEntity) {
-        return UniqueItemRegistry.FISHING_ROD.getDefaultItem(itemStack.getItem());
+public class FishBobberEntityMixin {
+    @Redirect(method = "removeIfInvalid", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z"))
+    private boolean removeIfInvalid(ItemStack stack, Item isOfItem) {
+        return UniqueItemRegistry.FISHING_ROD.isItemInRegistry(stack.getItem());
     }
 }

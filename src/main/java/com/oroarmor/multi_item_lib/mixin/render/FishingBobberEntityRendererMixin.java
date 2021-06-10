@@ -35,9 +35,8 @@ import net.minecraft.item.ItemStack;
 
 @Mixin(FishingBobberEntityRenderer.class)
 public class FishingBobberEntityRendererMixin {
-
-    @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getItem()Lnet/minecraft/item/Item;"))
-    private Item getItem(ItemStack stack) {
-        return UniqueItemRegistry.FISHING_ROD.getDefaultItem(stack.getItem());
+    @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z"))
+    private boolean render(ItemStack stack, Item isOfItem) {
+        return UniqueItemRegistry.FISHING_ROD.isItemInRegistry(stack.getItem());
     }
 }

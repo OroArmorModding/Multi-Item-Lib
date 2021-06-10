@@ -37,17 +37,15 @@ import net.minecraft.item.Items;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-@Environment(EnvType.CLIENT)
 @Mixin(HeldItemRenderer.class)
 public class HeldItemRendererMixin {
-
-    @Redirect(method = "renderFirstPersonItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getItem()Lnet/minecraft/item/Item;"))
-    private Item renderFirstPersonItem(ItemStack itemStack) {
-        return UniqueItemRegistry.CROSSBOW.getDefaultItem(itemStack.getItem());
+    @Redirect(method = "renderFirstPersonItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z", ordinal = 2))
+    private boolean renderFirstPersonItem(ItemStack stack, Item isOfItem) {
+        return UniqueItemRegistry.CROSSBOW.isItemInRegistry(stack.getItem());
     }
 
-    @Redirect(method = "renderItem(FLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider$Immediate;Lnet/minecraft/client/network/ClientPlayerEntity;I)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getItem()Lnet/minecraft/item/Item;"))
-    private Item renderItem(ItemStack itemStack) {
-        return UniqueItemRegistry.BOW.isItemInRegistry(itemStack.getItem()) ? Items.BOW : UniqueItemRegistry.CROSSBOW.getDefaultItem(itemStack.getItem());
+    @Redirect(method = "getHandRenderType", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z"))
+    private static boolean getHandRenderType(ItemStack stack, Item isOfItem) {
+        return UniqueItemRegistry.BOW.isItemInRegistry(stack.getItem()) || UniqueItemRegistry.CROSSBOW.isItemInRegistry(stack.getItem());
     }
 }

@@ -12,17 +12,16 @@ buildscript {
 }
 
 plugins {
-	id 'fabric-loom' version '0.6-SNAPSHOT'
+	id 'fabric-loom' version '0.8-SNAPSHOT'
 	id 'maven-publish'
 	id 'org.cadixdev.licenser' version '0.5.0'
 	id "signing"
-	id "maven"
 }
 apply plugin: 'io.codearte.nexus-staging'
 
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = JavaVersion.VERSION_16
+targetCompatibility = JavaVersion.VERSION_16
 
 archivesBaseName = project.archives_base_name
 version = project.mod_version
@@ -53,16 +52,9 @@ license {
 }
 
 dependencies {
-	// To change the versions see the gradle.properties file
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-
-	// Fabric API. This is technically optional, but you probably want it anyway.
-	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-
-	// PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
-	// You may need to force-disable transitiveness on them.
 }
 
 processResources {
@@ -83,7 +75,7 @@ tasks.withType(JavaCompile).configureEach {
 	// The Minecraft launcher currently installs Java 8 for users, so your mod probably wants to target Java 8 too
 	// JDK 9 introduced a new way of specifying this that will make sure no newer classes or methods are used.
 	// We'll use that if it's available, but otherwise we'll use the older option.
-	def targetVersion = 8
+	def targetVersion = 16
 	if (JavaVersion.current().isJava9Compatible()) {
 		 it.options.release = targetVersion
 	}
@@ -111,55 +103,62 @@ artifacts {
 	archives jar, sourcesJar, javadocJar
 }
 
-uploadArchives {
-	repositories {
-		mavenDeployer {
-			def ossrhUsername = "OroArmor"
-			def ossrhPassword = project.hasProperty("ossrhPassword") ? project.property("ossrhPassword") : System.getenv("OSSRH_PASSWORD")
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			artifact jar
+			artifact sourcesJar
+			artifact javadocJar
 
-			beforeDeployment {
-				MavenDeployment deployment -> signing.signPom(deployment)
-			}
-
-			repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-				authentication(userName: ossrhUsername, password: ossrhPassword)
-			}
-
-			snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-				authentication(userName: ossrhUsername, password: ossrhPassword)
-			}
-			pom.project {
-				name 'Multi Item Lib'
-				packaging 'jar'
+			pom {
+				name = 'Multi Item Lib'
+				packaging = 'jar'
 				// optionally artifactId can be defined here
-				description 'A placeholder mod for the fabric api until better unhardcoding exists.'
-				url 'http://github.com/OroArmor/Multi-Item-Lib'
+				description = 'A placeholder mod for the fabric api until better unhardcoding exists.'
+				url = 'http://github.com/OroArmor/Multi-Item-Lib'
 
 				scm {
-					connection 'scm:git:git://github.com/OroArmor/Multi-Item-Lib.git'
-					developerConnection 'scm:git:ssh://github.com:OroArmor/Multi-Item-Lib.git'
-					url 'http://github.com/OroArmor/Multi-Item-Lib'
+					connection = 'scm:git:git://github.com/OroArmor/Multi-Item-Lib.git'
+					developerConnection = 'scm:git:ssh://github.com:OroArmor/Multi-Item-Lib.git'
+					url = 'http://github.com/OroArmor/Multi-Item-Lib'
 				}
 
 				licenses {
 					license {
-						name 'MIT'
-						url 'https://mit-license.org/'
+						name = 'MIT'
+						url = 'https://mit-license.org/'
 					}
 				}
 
 				developers {
 					developer {
-						id 'OroArmor'
-						name 'Eli Orona'
-						email 'eliorona@live.com'
-						url "oroarmor.com"
+						id = 'OroArmor'
+						name = 'Eli Orona'
+						email = 'eliorona@live.com'
+						url = "oroarmor.com"
 					}
 				}
 			}
 		}
 	}
+
+	repositories {
+		def ossrhUsername = "OroArmor"
+		def ossrhPassword = (project.hasProperty("ossrhPassword") ? project.property("ossrhPassword") : System.getenv("OSSRH_PASSWORD")) as String
+		mavenLocal()
+		maven {
+			def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+			def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
+			url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+			credentials(PasswordCredentials) {
+				username = ossrhUsername
+				password = ossrhPassword
+			}
+			name = "mavenCentral"
+		}
+	}
 }
+
 
 nexusStaging {
 //	serverUrl = "https://s01.oss.sonatype.org/service/local/" //required only for projects registered in Sonatype after 2021-02-24
@@ -195,7 +194,7 @@ task generateChangelog {
 			contents += line + "\n"
 	}
 
-	def changelogs = contents.split("\\-\\-\\-\\-")
+	def changelogs = contents.split("----")
 	project.ext.changelog = changelogs.find { log -> log.contains(project.version) }
 	println project.ext.changelog
 }

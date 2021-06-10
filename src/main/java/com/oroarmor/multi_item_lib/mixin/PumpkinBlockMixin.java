@@ -35,8 +35,8 @@ import net.minecraft.item.ItemStack;
 
 @Mixin(PumpkinBlock.class)
 public class PumpkinBlockMixin {
-    @Redirect(method = "onUse", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getItem()Lnet/minecraft/item/Item;", ordinal = 0))
-    private Item onUse(ItemStack stack) {
-        return UniqueItemRegistry.SHEARS.getDefaultItem(stack.getItem());
+    @Redirect(method = "onUse", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z"))
+    private boolean onUse(ItemStack stack, Item isOfItem) {
+        return UniqueItemRegistry.SHEARS.isItemInRegistry(stack.getItem());
     }
 }

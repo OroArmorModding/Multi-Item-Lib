@@ -35,10 +35,8 @@ import net.minecraft.item.ItemStack;
 
 @Mixin(LivingEntity.class)
 public class LivingEntityMixin {
-
-    @Redirect(method = "initAi()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getItem()Lnet/minecraft/item/Item;"))
-    public Item initAi(ItemStack itemStack) {
-        return UniqueItemRegistry.ELYTRA.getDefaultItem(itemStack.getItem());
+    @Redirect(method = "tickFallFlying()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z"))
+    private boolean tickFallFlying(ItemStack stack, Item isOfItem) {
+        return UniqueItemRegistry.ELYTRA.isItemInRegistry(stack.getItem());
     }
-
 }

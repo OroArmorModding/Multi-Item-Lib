@@ -35,14 +35,13 @@ import net.minecraft.item.ItemStack;
 
 @Mixin(PlayerEntity.class)
 public class PlayerEntityMixin {
-
-    @Redirect(method = "checkFallFlying()Z", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getItem()Lnet/minecraft/item/Item;"))
-    private Item checkFallFlying(ItemStack stack) {
-        return UniqueItemRegistry.ELYTRA.getDefaultItem(stack.getItem());
+    @Redirect(method = "checkFallFlying()Z", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z"))
+    private boolean checkFallFlying(ItemStack stack, Item isOfItem) {
+        return UniqueItemRegistry.ELYTRA.isItemInRegistry(stack.getItem());
     }
 
-    @Redirect(method = "damageShield(F)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getItem()Lnet/minecraft/item/Item;"))
-    private Item shields(ItemStack stack) {
-        return UniqueItemRegistry.SHIELD.getDefaultItem(stack.getItem());
+    @Redirect(method = "damageShield(F)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z"))
+    private boolean shields(ItemStack stack, Item isOfITem) {
+        return UniqueItemRegistry.SHIELD.isItemInRegistry(stack.getItem());
     }
 }
