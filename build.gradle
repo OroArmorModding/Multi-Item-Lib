@@ -43,7 +43,7 @@ tasks.withType(Sign) {
 if (project.hasProperty("sign")) {
 	signing {
 		useGpgCmd()
-		sign configurations.archives
+		sign publishing.publications.getByName("mavenJava")
 	}
 }
 
