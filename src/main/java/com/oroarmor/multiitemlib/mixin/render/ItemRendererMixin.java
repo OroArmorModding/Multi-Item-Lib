@@ -22,22 +22,21 @@
  * SOFTWARE.
  */
 
-package com.oroarmor.multi_item_lib.mixin;
+package com.oroarmor.multiitemlib.mixin.render;
 
-import com.oroarmor.multi_item_lib.UniqueItemRegistry;
+import com.oroarmor.multiitemlib.api.UniqueItemRegistry;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.FishingBobberEntity;
+import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-@Mixin(FishingBobberEntity.class)
-public class FishBobberEntityMixin {
-    @Redirect(method = "removeIfInvalid", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z"))
-    private boolean removeIfInvalid(ItemStack stack, Item isOfItem) {
-        return UniqueItemRegistry.FISHING_ROD.isItemInRegistry(stack.getItem());
+@Mixin(ItemRenderer.class)
+public abstract class ItemRendererMixin {
+    @Redirect(method = "getHeldItemModel", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z", ordinal = 1))
+    private boolean getHeldItemModel(ItemStack stack, Item isOfItem) {
+        return UniqueItemRegistry.TRIDENT.isItemInRegistry(stack.getItem());
     }
 }

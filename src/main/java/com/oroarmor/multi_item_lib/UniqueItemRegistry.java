@@ -24,66 +24,43 @@
 
 package com.oroarmor.multi_item_lib;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import net.minecraft.item.Item;
-import net.minecraft.item.Items;
 
-/**
- * A wrapper class for a set of {@link Item}s.
- */
+@Deprecated(forRemoval = true)
 public final class UniqueItemRegistry {
-    /**
-     * The {@link UniqueItemRegistry} for shears. Allows for use on entities and blocks.
-     */
-    public static final UniqueItemRegistry SHEARS = new UniqueItemRegistry(Items.SHEARS);
-    /**
-     * The {@link UniqueItemRegistry} for elytra. Allows for fall flying.
-     */
-    public static final UniqueItemRegistry ELYTRA = new UniqueItemRegistry(Items.ELYTRA);
-    /**
-     * The {@link UniqueItemRegistry} for fishing rods. Allows for the fishing bobber to work normally and correct rendering.
-     */
-    public static final UniqueItemRegistry FISHING_ROD = new UniqueItemRegistry(Items.FISHING_ROD);
-    /**
-     * The {@link UniqueItemRegistry} for shields. Allows for blocking and correct rendering.
-     */
-    public static final UniqueItemRegistry SHIELD = new UniqueItemRegistry(Items.SHIELD);
-    /**
-     * The {@link UniqueItemRegistry} for bows. Allows for shooting arrows and correct rendering.
-     */
-    public static final UniqueItemRegistry BOW = new UniqueItemRegistry(Items.BOW);
-    /**
-     * The {@link UniqueItemRegistry} for crossbows. Allows for shooting arrows and correct rendering.
-     */
-    public static final UniqueItemRegistry CROSSBOW = new UniqueItemRegistry(Items.CROSSBOW);
-    /**
-     * The {@link UniqueItemRegistry} for tridents. Allows for some correct rendering. Mixins will be needed for full correct rendering.
-     */
-    public static final UniqueItemRegistry TRIDENT = new UniqueItemRegistry(Items.TRIDENT);
+    @Deprecated(forRemoval = true)
+    public static final UniqueItemRegistry SHEARS = new UniqueItemRegistry(com.oroarmor.multiitemlib.api.UniqueItemRegistry.SHEARS);
+    @Deprecated(forRemoval = true)
+    public static final UniqueItemRegistry ELYTRA = new UniqueItemRegistry(com.oroarmor.multiitemlib.api.UniqueItemRegistry.ELYTRA);
+    @Deprecated(forRemoval = true)
+    public static final UniqueItemRegistry FISHING_ROD = new UniqueItemRegistry(com.oroarmor.multiitemlib.api.UniqueItemRegistry.FISHING_ROD);
+    @Deprecated(forRemoval = true)
+    public static final UniqueItemRegistry SHIELD = new UniqueItemRegistry(com.oroarmor.multiitemlib.api.UniqueItemRegistry.SHIELD);
+    @Deprecated(forRemoval = true)
+    public static final UniqueItemRegistry BOW = new UniqueItemRegistry(com.oroarmor.multiitemlib.api.UniqueItemRegistry.BOW);
+    @Deprecated(forRemoval = true)
+    public static final UniqueItemRegistry CROSSBOW = new UniqueItemRegistry(com.oroarmor.multiitemlib.api.UniqueItemRegistry.CROSSBOW);
+    @Deprecated(forRemoval = true)
+    public static final UniqueItemRegistry TRIDENT = new UniqueItemRegistry(com.oroarmor.multiitemlib.api.UniqueItemRegistry.TRIDENT);
 
-    private final Set<Item> itemList;
+    private final com.oroarmor.multiitemlib.api.UniqueItemRegistry registry;
 
-    private final Item defaultItem;
-
-    private UniqueItemRegistry(Item defaultItem) {
-        this.defaultItem = defaultItem;
-        itemList = new HashSet<>();
+    private UniqueItemRegistry(com.oroarmor.multiitemlib.api.UniqueItemRegistry registry) {
+        this.registry = registry;
     }
 
+    @Deprecated(forRemoval = true)
     public void addItemToRegistry(Item item) {
-        itemList.add(item);
+        registry.addItemToRegistry(item);
     }
 
+    @Deprecated(forRemoval = true)
     public Item getDefaultItem(Item item) {
-        if (isItemInRegistry(item)) {
-            return defaultItem;
-        }
-        return item;
+        return registry.getDefaultItem(item);
     }
 
+    @Deprecated(forRemoval = true)
     public boolean isItemInRegistry(Item item) {
-        return itemList.contains(item);
+        return registry.isItemInRegistry(item);
     }
 }

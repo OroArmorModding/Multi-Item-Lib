@@ -22,21 +22,21 @@
  * SOFTWARE.
  */
 
-package com.oroarmor.multi_item_lib.mixin;
+package com.oroarmor.multiitemlib.mixin;
 
-import com.oroarmor.multi_item_lib.UniqueItemRegistry;
+import com.oroarmor.multiitemlib.api.UniqueItemRegistry;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.block.BeehiveBlock;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-@Mixin(ClientPlayerEntity.class)
-public class ClientPlayerEntityMixin {
-    @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z"))
-    private boolean tickMovement(ItemStack stack, Item isOfItem) {
-        return UniqueItemRegistry.ELYTRA.isItemInRegistry(stack.getItem());
+@Mixin(BeehiveBlock.class)
+public class BeehiveBlockMixin {
+    @Redirect(method = "onUse", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z", ordinal = 0))
+    private boolean onUse(ItemStack stack, Item isOfItem) {
+        return UniqueItemRegistry.SHEARS.isItemInRegistry(stack.getItem());
     }
 }
