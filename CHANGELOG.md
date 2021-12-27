@@ -1,3 +1,10 @@
+Version 1.5.0
+
+- Removed `UniqueItemRegistry.ELYTRA` and relating mixins
+- Removed deprecated `com.oroamor.multi_item_lib.UniqueItemRegistry`
+- Update to 1.18
+
+----
 Version 1.4.0
 
 - Fix mixin crash issue in production

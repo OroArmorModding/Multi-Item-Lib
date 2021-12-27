@@ -37,6 +37,6 @@ import net.minecraft.item.ItemStack;
 public class MooshroomEntityInteractShearsMixin {
     @Redirect(method = "interactMob", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z", ordinal = 1))
     private boolean interactMob(ItemStack stack, Item isOfItem) {
-        return UniqueItemRegistry.ELYTRA.isItemInRegistry(stack.getItem());
+        return UniqueItemRegistry.SHEARS.isItemInRegistry(stack.getItem());
     }
 }

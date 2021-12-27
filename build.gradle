@@ -1,27 +1,14 @@
-buildscript {
-	repositories {
-		maven {
-			url "https://plugins.gradle.org/m2/"
-		}
-
-	}
-	dependencies {
-		classpath "org.kohsuke:github-api:1.114"
-		classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.30.0"
-	}
-}
-
 plugins {
-	id 'fabric-loom' version '0.8-SNAPSHOT'
-	id 'maven-publish'
-	id 'org.cadixdev.licenser' version '0.5.0'
-	id "signing"
+	id 'fabric-loom' version '0.10-SNAPSHOT'
+	id 'com.oroarmor.general-gradle-plugin' version '1.0.0'
+	id 'com.oroarmor.maven-central-publish-plugin' version '1.0.0'
+	id 'com.oroarmor.minecraft-gradle-plugin' version '1.0.0'
+
+	id 'org.barfuin.gradle.taskinfo' version '1.0.5'
 }
-apply plugin: 'io.codearte.nexus-staging'
 
-
-sourceCompatibility = JavaVersion.VERSION_16
-targetCompatibility = JavaVersion.VERSION_16
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
 
 archivesBaseName = project.archives_base_name
 version = project.mod_version
@@ -34,23 +21,19 @@ repositories {
 	}
 }
 
-ext.changelog = ""
-
-tasks.withType(Sign) {
-	onlyIf { project.hasProperty("sign") }
+oroarmor {
+	name = "Multi-Item-Lib"
+	githubProjectName = "OroArmor/Multi-Item-Lib"
+	description = "A placeholder mod for the Fabric-Api until better unhardcoding exists."
 }
 
-if (project.hasProperty("sign")) {
-	signing {
-		useGpgCmd()
-		publishing.publications.all { Publication pub ->
-			sign pub
-		}
-	}
-}
-
-license {
-	header = rootProject.file("LICENSE")
+minecraftPublishing {
+	versions = ["1.18", "1.18.1"]
+	modrinthId = "nMKRmM9Y"
+	curseforgeId = "560669"
+	dependencies = []
+	loader = "Fabric"
+	modTask = remapJar
 }
 
 dependencies {
@@ -68,30 +51,20 @@ processResources {
 }
 
 tasks.withType(JavaCompile).configureEach {
-	// ensure that the encoding is set to UTF-8, no matter what the system default is
-	// this fixes some edge cases with special characters not displaying correctly
-	// see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
-	// If Javadoc is generated, this must be specified in that task too.
 	it.options.encoding = "UTF-8"
 
-	// The Minecraft launcher currently installs Java 8 for users, so your mod probably wants to target Java 8 too
-	// JDK 9 introduced a new way of specifying this that will make sure no newer classes or methods are used.
-	// We'll use that if it's available, but otherwise we'll use the older option.
-	def targetVersion = 16
+	def targetVersion = 17
 	if (JavaVersion.current().isJava9Compatible()) {
 		 it.options.release = targetVersion
 	}
 }
 
 java {
-	// Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
-	// if it is present.
-	// If you remove this line, sources will not be generated.
 	withSourcesJar()
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
-	classifier = 'javadoc'
+	archiveClassifier = 'javadoc'
 	from javadoc.destinationDir
 }
 
@@ -101,102 +74,24 @@ jar {
 	}
 }
 
-artifacts {
-	archives jar, sourcesJar, javadocJar
-}
-
 publishing {
 	publications {
 		mavenJava(MavenPublication) {
-			artifact rootProject.file("build/libs/${project.archives_base_name}-${project.version}.jar")
-			artifact sourcesJar
-			artifact javadocJar
-
-			pom {
-				name = 'Multi Item Lib'
-				packaging = 'jar'
-				// optionally artifactId can be defined here
-				description = 'A placeholder mod for the fabric api until better unhardcoding exists.'
-				url = 'http://github.com/OroArmor/Multi-Item-Lib'
-
-				scm {
-					connection = 'scm:git:git://github.com/OroArmor/Multi-Item-Lib.git'
-					developerConnection = 'scm:git:ssh://github.com:OroArmor/Multi-Item-Lib.git'
-					url = 'http://github.com/OroArmor/Multi-Item-Lib'
-				}
-
-				licenses {
-					license {
-						name = 'MIT'
-						url = 'https://mit-license.org/'
-					}
-				}
-
-				developers {
-					developer {
-						id = 'OroArmor'
-						name = 'Eli Orona'
-						email = 'eliorona@live.com'
-						url = "oroarmor.com"
-					}
-				}
-			}
+			from components.java
+			oroarmor.generateDefaultPom(it)
 		}
 	}
 
 	repositories {
-		def ossrhUsername = "OroArmor"
-		def ossrhPassword = (project.hasProperty("ossrhPassword") ? project.property("ossrhPassword") : System.getenv("OSSRH_PASSWORD")) as String
 		mavenLocal()
-		maven {
-			def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
-			def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
-			url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
-			credentials(PasswordCredentials) {
-				username = ossrhUsername
-				password = ossrhPassword
-			}
-			name = "mavenCentral"
-		}
 	}
 }
 
-
-nexusStaging {
-//	serverUrl = "https://s01.oss.sonatype.org/service/local/" //required only for projects registered in Sonatype after 2021-02-24
-	username = "OroArmor"
-	password = project.hasProperty("ossrhPassword") ? project.property("ossrhPassword") : System.getenv("OSSRH_PASSWORD")
+import com.oroarmor.orogradleplugin.publish.PublishProjectToGithubTask
+task github(type: PublishProjectToGithubTask) {
+	assets.from(remapJar, sourcesJar, javadocJar)
 }
 
-task github {
-	onlyIf {
-		System.getenv().GITHUB_TOKEN
-	}
-
-	doLast {
-		def github = org.kohsuke.github.GitHub.connectUsingOAuth(System.getenv().GITHUB_TOKEN as String)
-		def repository = github.getRepository("OroArmor/Multi-Item-Lib")
-
-		def releaseBuilder = new org.kohsuke.github.GHReleaseBuilder(repository, project.mod_version)
-		releaseBuilder.name("$project.project_name $project.mod_version for $project.minecraft_version")
-		releaseBuilder.body(project.ext.changelog)
-		releaseBuilder.commitish("master")
-
-		def ghRelease = releaseBuilder.create()
-		ghRelease.uploadAsset(file("${project.rootDir}/build/libs/${archivesBaseName}-${version}.jar"), "application/java-archive")
-	}
-}
-
-task generateChangelog {
-	def changelogFile = file("CHANGELOG.md")
-	def contents = ""
-	changelogFile.withReader { reader ->
-		def line
-		while ((line = reader.readLine()) != null)
-			contents += line + "\n"
-	}
-
-	def changelogs = contents.split("----")
-	project.ext.changelog = changelogs.find { log -> log.contains(project.version) }
-	println project.ext.changelog
-}
+import com.oroarmor.orogradleplugin.minecraft.*
+task curseforge(type: CurseforgePublishTask)
+task modrinth(type: ModrinthPublishTask)

@@ -39,10 +39,6 @@ public final class UniqueItemRegistry {
      */
     public static final UniqueItemRegistry SHEARS = new UniqueItemRegistry(Items.SHEARS);
     /**
-     * The {@link UniqueItemRegistry} for elytra. Allows for fall flying.
-     */
-    public static final UniqueItemRegistry ELYTRA = new UniqueItemRegistry(Items.ELYTRA);
-    /**
      * The {@link UniqueItemRegistry} for fishing rods. Allows for the fishing bobber to work normally and correct rendering.
      */
     public static final UniqueItemRegistry FISHING_ROD = new UniqueItemRegistry(Items.FISHING_ROD);
