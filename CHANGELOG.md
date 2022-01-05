@@ -1,3 +1,8 @@
+Version 1.5.1
+
+- Fix some publishing issues
+
+----
 Version 1.5.0
 
 - Removed `UniqueItemRegistry.ELYTRA` and relating mixins
