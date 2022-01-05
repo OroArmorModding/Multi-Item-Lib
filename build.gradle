@@ -78,7 +78,11 @@ publishing {
 	publications {
 		mavenJava(MavenPublication) {
 			from components.java
+			artifact javadocJar
+
 			oroarmor.generateDefaultPom(it)
+
+			archivesBaseName = project.archivesBaseName
 		}
 	}
 
@@ -94,4 +98,18 @@ task github(type: PublishProjectToGithubTask) {
 
 import com.oroarmor.orogradleplugin.minecraft.*
 task curseforge(type: CurseforgePublishTask)
-task modrinth(type: ModrinthPublishTask)
+task modrinth(type: ModrinthPublishTask) {
+	doFirst {
+		def c = remapJar.class
+		while (c.superclass != null) {
+			println c
+			c = c.superclass
+		}
+
+		if (remapJar instanceof AbstractArchiveTask) {
+			println true
+
+			println remapJar.getArchivePath()
+		}
+	}
+}
