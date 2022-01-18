@@ -1,3 +1,8 @@
+Version 1.5.2
+
+- Fix issue with Item Registries not knowing their main item
+
+----
 Version 1.5.1
 
 - Fix some publishing issues

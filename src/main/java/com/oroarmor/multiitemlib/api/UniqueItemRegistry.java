@@ -66,6 +66,7 @@ public final class UniqueItemRegistry {
     private UniqueItemRegistry(Item defaultItem) {
         this.defaultItem = defaultItem;
         itemList = new HashSet<>();
+        addItemToRegistry(defaultItem);
     }
 
     public void addItemToRegistry(Item item) {
