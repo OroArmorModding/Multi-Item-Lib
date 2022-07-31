@@ -24,6 +24,6 @@ gpg --fast-import --no-tty --batch --yes eliorona-sign.asc
 
 echo "📦 Publishing..."
 
-./gradlew build publishProject -Psign closeAndReleaseRepository
+./gradlew build publishProject
 
 echo "✅ Done!"

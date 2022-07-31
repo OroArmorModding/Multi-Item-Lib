@@ -3,6 +3,8 @@ Version 1.5.3
 - Update to 1.19
 - Fix incorrect mixin ordinal for trident rendering
 - Incompatible with bow api
+- No longer published to Maven Central
+
 ----
 Version 1.5.2
 

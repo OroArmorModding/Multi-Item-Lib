@@ -1,7 +1,6 @@
 plugins {
 	id 'fabric-loom' version '0.12-SNAPSHOT'
 	id 'com.oroarmor.general-gradle-plugin' version '1.0.0'
-	id 'com.oroarmor.maven-central-publish-plugin' version '1.0.0'
 	id 'com.oroarmor.minecraft-gradle-plugin' version '1.0.0'
 
 	id 'org.barfuin.gradle.taskinfo' version '1.0.5'
