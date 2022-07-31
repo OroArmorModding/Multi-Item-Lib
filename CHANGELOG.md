@@ -1,3 +1,9 @@
+Version 1.5.3
+
+- Update to 1.19
+- Fix incorrect mixin ordinal for trident rendering
+- Incompatible with bow api
+----
 Version 1.5.2
 
 - Fix issue with Item Registries not knowing their main item

@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '0.10-SNAPSHOT'
+	id 'fabric-loom' version '0.12-SNAPSHOT'
 	id 'com.oroarmor.general-gradle-plugin' version '1.0.0'
 	id 'com.oroarmor.maven-central-publish-plugin' version '1.0.0'
 	id 'com.oroarmor.minecraft-gradle-plugin' version '1.0.0'
@@ -16,9 +16,6 @@ group = project.maven_group
 
 repositories {
 	mavenCentral()
-	maven {
-		url "https://jitpack.io"
-	}
 }
 
 oroarmor {
@@ -28,7 +25,7 @@ oroarmor {
 }
 
 minecraftPublishing {
-	versions = ["1.18", "1.18.1"]
+	versions = ["1.19", "1.19.1" ]
 	modrinthId = "nMKRmM9Y"
 	curseforgeId = "560669"
 	dependencies = []
@@ -98,18 +95,4 @@ task github(type: PublishProjectToGithubTask) {
 
 import com.oroarmor.orogradleplugin.minecraft.*
 task curseforge(type: CurseforgePublishTask)
-task modrinth(type: ModrinthPublishTask) {
-	doFirst {
-		def c = remapJar.class
-		while (c.superclass != null) {
-			println c
-			c = c.superclass
-		}
-
-		if (remapJar instanceof AbstractArchiveTask) {
-			println true
-
-			println remapJar.getArchivePath()
-		}
-	}
-}
+task modrinth(type: ModrinthPublishTask)

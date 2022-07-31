@@ -20,7 +20,9 @@
     "multi-item-lib.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.12.12",
-    "minecraft": ">=1.18"
+    "minecraft": ">=1.19"
+  },
+  "breaks": {
+    "bow_api": "*"
   }
 }
