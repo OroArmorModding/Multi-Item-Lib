@@ -20,7 +20,7 @@
     "render.PlayerEntityRendererMixin"
   ],
   "injectors": {
-    "defaultRequire": 1
+    "defaultRequire": 0
   },
-  "priority": 500
+  "mixinPriority": 500
 }

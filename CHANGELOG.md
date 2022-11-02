@@ -1,3 +1,8 @@
+Version 1.6.1
+
+- Actually have mixin conflicts default to other mods.
+
+----
 Version 1.6.0
 
 - Fix incompatibility with Quilt Standard Libraries
