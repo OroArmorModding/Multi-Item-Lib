@@ -1,7 +1,7 @@
 plugins {
-	id 'fabric-loom' version '0.12-SNAPSHOT'
-	id 'com.oroarmor.general-gradle-plugin' version '1.0.0'
-	id 'com.oroarmor.minecraft-gradle-plugin' version '1.0.0'
+	id 'fabric-loom' version '1.1-SNAPSHOT'
+	id 'com.oroarmor.general-gradle-plugin' version '1.2.1'
+	id 'com.oroarmor.minecraft-gradle-plugin' version '1.2.1'
 
 	id 'org.barfuin.gradle.taskinfo' version '1.0.5'
 }
@@ -24,11 +24,10 @@ oroarmor {
 }
 
 minecraftPublishing {
-	versions = ["1.19", "1.19.1" ]
+	gameVersions = ["1.19.4"]
 	modrinthId = "nMKRmM9Y"
 	curseforgeId = "560669"
-	dependencies = []
-	loader = "Fabric"
+	loaders = ["Fabric", "Quilt"]
 	modTask = remapJar
 }
 

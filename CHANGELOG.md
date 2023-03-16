@@ -1,3 +1,9 @@
+Version 1.6.2
+
+- Update to Minecraft 1.19.4
+- Update oro-gradle-plugin
+
+----
 Version 1.6.1
 
 - Actually have mixin conflicts default to other mods.

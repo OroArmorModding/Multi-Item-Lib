@@ -8,6 +8,10 @@ pluginManagement {
             name = "OroArmor"
             url = "https://maven.oroarmor.com"
         }
+        maven {
+            name = "Quilt"
+            url = "https://maven.quiltmc.org/repository/release"
+        }
         gradlePluginPortal()
     }
 }
