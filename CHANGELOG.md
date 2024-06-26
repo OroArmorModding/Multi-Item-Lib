@@ -3,6 +3,7 @@ Version 1.6.3
 - Tweaked mixins to be more compatible.
   - One known compatibility resolution is Galosphere.
 - Add in new interface for customizing the cooldown of a shield when it is disabled by an axe
+- Re-added Elytra utils
 - Now requires 0.15.11 Fabric Loader Version
 - Removed taskinfo gradle plugin, not needed
 - Update by Roadhog360

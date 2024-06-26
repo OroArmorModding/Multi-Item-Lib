@@ -29,7 +29,9 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.oroarmor.multiitemlib.api.ICustomShieldDisableCooldown;
 import com.oroarmor.multiitemlib.api.UniqueItemRegistry;
 import net.minecraft.entity.player.ItemCooldownManager;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 
 import net.minecraft.entity.player.PlayerEntity;
@@ -38,6 +40,8 @@ import net.minecraft.item.ItemStack;
 
 @Mixin(PlayerEntity.class)
 public class PlayerEntityMixin {
+    @Shadow @Final private ItemCooldownManager itemCooldownManager;
+
     @WrapOperation(method = "damageShield(F)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z"))
     private boolean handleShieldDamage(ItemStack instance, Item item, Operation<Boolean> original) {
         return UniqueItemRegistry.SHIELD.isItemInRegistry(instance.getItem());
@@ -52,5 +56,10 @@ public class PlayerEntityMixin {
             }
             original.call(instance, registryEntry, disableTime);
         }
+    }
+
+    @WrapOperation(method = "checkFallFlying", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z"))
+    private boolean handleDisableShield(ItemStack instance, Item item, Operation<Boolean> original) {
+        return UniqueItemRegistry.ELYTRA.isItemInRegistry(instance.getItem());
     }
 }

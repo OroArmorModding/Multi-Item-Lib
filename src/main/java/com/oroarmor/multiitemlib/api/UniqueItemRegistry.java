@@ -60,6 +60,10 @@ public final class UniqueItemRegistry {
      * The {@link UniqueItemRegistry} for tridents. Allows for some correct rendering. Mixins will be needed for full correct rendering.
      */
     public static final UniqueItemRegistry TRIDENT = new UniqueItemRegistry(Items.TRIDENT);
+    /**
+     * The {@link UniqueItemRegistry} for tridents. Allows for some correct rendering. Mixins will be needed for full correct rendering.
+     */
+    public static final UniqueItemRegistry ELYTRA = new UniqueItemRegistry(Items.ELYTRA);
 
     private final Set<Item> itemList;
 
