@@ -1,3 +1,13 @@
+Version 1.6.3
+
+- Tweaked mixins to be more compatible.
+  - One known compatibility resolution is Galosphere.
+- Add in new interface for customizing the cooldown of a shield when it is disabled by an axe
+- Now requires 0.15.11 Fabric Loader Version
+- Removed taskinfo gradle plugin, not needed
+- Update by Roadhog360
+
+----
 Version 1.6.2
 
 - Update to Minecraft 1.19.4

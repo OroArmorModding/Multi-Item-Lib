@@ -28,7 +28,7 @@ public interface ICustomShieldDisableCooldown {
 
     /**
      * If the shield is disabled by an axe, how long should the cooldown last for?
-     * Set to 0 to make the shield never suffer from being disabled by an axe.
+     * Set to 0 to make the shield never suffer from being disabled by an axe. (Other shields in your inventory still get disabled)
      * Default value is 100.
      */
     int getShieldCooldown();
