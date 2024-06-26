@@ -24,6 +24,8 @@
 
 package com.oroarmor.multiitemlib.mixin.render;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.oroarmor.multiitemlib.api.UniqueItemRegistry;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -35,13 +37,14 @@ import net.minecraft.item.ItemStack;
 
 @Mixin(HeldItemRenderer.class)
 public class HeldItemRendererMixin {
-    @Redirect(method = "renderFirstPersonItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z", ordinal = 1))
-    private boolean renderFirstPersonItem(ItemStack stack, Item isOfItem) {
-        return UniqueItemRegistry.CROSSBOW.isItemInRegistry(stack.getItem());
+    @WrapOperation(method = "renderFirstPersonItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z", ordinal = 1))
+    private boolean renderFirstPersonItem(ItemStack instance, Item item, Operation<Boolean> original) {
+        return UniqueItemRegistry.CROSSBOW.isItemInRegistry(instance.getItem());
     }
 
-    @Redirect(method = "getHandRenderType", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z"))
-    private static boolean getHandRenderType(ItemStack stack, Item isOfItem) {
-        return UniqueItemRegistry.BOW.isItemInRegistry(stack.getItem()) || UniqueItemRegistry.CROSSBOW.isItemInRegistry(stack.getItem());
+    @WrapOperation(method = "getHandRenderType", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z"))
+    private static boolean getHandRenderType(ItemStack instance, Item item, Operation<Boolean> original) {
+        return UniqueItemRegistry.BOW.isItemInRegistry(instance.getItem())
+                || UniqueItemRegistry.CROSSBOW.isItemInRegistry(instance.getItem());
     }
 }

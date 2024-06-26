@@ -26,20 +26,26 @@ package com.oroarmor.multiitemlib.mixin;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.oroarmor.multiitemlib.api.ICustomShieldDisableCooldown;
 import com.oroarmor.multiitemlib.api.UniqueItemRegistry;
+import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.entity.player.ItemCooldownManager;
+import net.minecraft.item.Item;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
 
-import net.minecraft.entity.passive.SheepEntity;
-import net.minecraft.entity.passive.SnowGolemEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import java.util.Collections;
 
-@Mixin({SheepEntity.class, SnowGolemEntity.class})
-public class EntityInteractShearsMixin {
-    @WrapOperation(method = "interactMob", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z"))
-    private boolean interactMob(ItemStack instance, Item item, Operation<Boolean> original) {
-        return UniqueItemRegistry.SHEARS.isItemInRegistry(instance.getItem());
+@Mixin(MobEntity.class)
+public class MobEntityMixin {
+    @WrapOperation(method = "disablePlayerShield", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/ItemCooldownManager;set(Lnet/minecraft/item/Item;I)V"))
+    private void handleDisableShield(ItemCooldownManager instance, Item item, int duration, Operation<Void> original) {
+        for(Item registryEntry : Collections.unmodifiableSet(UniqueItemRegistry.SHIELD.getValues())) {
+            int disableTime = duration;
+            if(registryEntry instanceof ICustomShieldDisableCooldown) {
+                disableTime = ((ICustomShieldDisableCooldown) registryEntry).getShieldCooldown();
+            }
+            original.call(instance, registryEntry, disableTime);
+        }
     }
 }

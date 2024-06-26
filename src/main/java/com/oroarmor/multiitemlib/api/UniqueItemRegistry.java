@@ -24,6 +24,8 @@
 
 package com.oroarmor.multiitemlib.api;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -82,5 +84,9 @@ public final class UniqueItemRegistry {
 
     public boolean isItemInRegistry(Item item) {
         return itemList.contains(item);
+    }
+
+    public Set<Item> getValues() {
+        return Collections.unmodifiableSet(itemList);
     }
 }

@@ -24,10 +24,13 @@
 
 package com.oroarmor.multiitemlib.mixin;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.oroarmor.multiitemlib.api.ICustomShieldDisableCooldown;
 import com.oroarmor.multiitemlib.api.UniqueItemRegistry;
+import net.minecraft.entity.player.ItemCooldownManager;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -35,8 +38,19 @@ import net.minecraft.item.ItemStack;
 
 @Mixin(PlayerEntity.class)
 public class PlayerEntityMixin {
-    @Redirect(method = "damageShield(F)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z"))
-    private boolean shields(ItemStack stack, Item isOfITem) {
-        return UniqueItemRegistry.SHIELD.isItemInRegistry(stack.getItem());
+    @WrapOperation(method = "damageShield(F)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z"))
+    private boolean handleShieldDamage(ItemStack instance, Item item, Operation<Boolean> original) {
+        return UniqueItemRegistry.SHIELD.isItemInRegistry(instance.getItem());
+    }
+
+    @WrapOperation(method = "disableShield", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/ItemCooldownManager;set(Lnet/minecraft/item/Item;I)V"))
+    private void handleDisableShield(ItemCooldownManager instance, Item item, int duration, Operation<Void> original) {
+        for(Item registryEntry : UniqueItemRegistry.SHIELD.getValues()) {
+            int disableTime = duration;
+            if(registryEntry instanceof ICustomShieldDisableCooldown) {
+                disableTime = ((ICustomShieldDisableCooldown) registryEntry).getShieldCooldown();
+            }
+            original.call(instance, registryEntry, disableTime);
+        }
     }
 }

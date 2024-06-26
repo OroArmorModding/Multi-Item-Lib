@@ -24,6 +24,8 @@
 
 package com.oroarmor.multiitemlib.mixin;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.oroarmor.multiitemlib.api.UniqueItemRegistry;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -35,8 +37,8 @@ import net.minecraft.item.ItemStack;
 
 @Mixin({MooshroomEntity.class})
 public class MooshroomEntityInteractShearsMixin {
-    @Redirect(method = "interactMob", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z", ordinal = 1))
-    private boolean interactMob(ItemStack stack, Item isOfItem) {
-        return UniqueItemRegistry.SHEARS.isItemInRegistry(stack.getItem());
+    @WrapOperation(method = "interactMob", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z", ordinal = 1))
+    private boolean interactMob(ItemStack instance, Item item, Operation<Boolean> original) {
+        return UniqueItemRegistry.SHEARS.isItemInRegistry(instance.getItem());
     }
 }

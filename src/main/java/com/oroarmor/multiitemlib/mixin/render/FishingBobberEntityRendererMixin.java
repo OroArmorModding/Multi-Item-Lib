@@ -24,6 +24,8 @@
 
 package com.oroarmor.multiitemlib.mixin.render;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.oroarmor.multiitemlib.api.UniqueItemRegistry;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -35,8 +37,8 @@ import net.minecraft.item.ItemStack;
 
 @Mixin(FishingBobberEntityRenderer.class)
 public class FishingBobberEntityRendererMixin {
-    @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z"))
-    private boolean render(ItemStack stack, Item isOfItem) {
-        return UniqueItemRegistry.FISHING_ROD.isItemInRegistry(stack.getItem());
+    @WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z"))
+    private boolean render(ItemStack instance, Item item, Operation<Boolean> original) {
+        return UniqueItemRegistry.FISHING_ROD.isItemInRegistry(instance.getItem());
     }
 }
