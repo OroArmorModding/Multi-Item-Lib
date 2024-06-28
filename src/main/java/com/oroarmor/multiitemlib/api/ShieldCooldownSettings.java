@@ -32,4 +32,10 @@ public interface ShieldCooldownSettings {
      * Default value is 100.
      */
     int getDisableCooldown();
+
+    /**
+     * How many ticks should it take between right clicking the shield, and its protection being effective?
+     * Default value is 5.
+     */
+    int getRaiseCooldown();
 }
