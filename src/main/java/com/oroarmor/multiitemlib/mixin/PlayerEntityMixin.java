@@ -26,7 +26,7 @@ package com.oroarmor.multiitemlib.mixin;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import com.oroarmor.multiitemlib.api.ICustomShieldDisableCooldown;
+import com.oroarmor.multiitemlib.api.ShieldCooldownSettings;
 import com.oroarmor.multiitemlib.api.UniqueItemRegistry;
 import net.minecraft.entity.player.ItemCooldownManager;
 import org.spongepowered.asm.mixin.Final;
@@ -50,9 +50,11 @@ public class PlayerEntityMixin {
     @WrapOperation(method = "disableShield", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/ItemCooldownManager;set(Lnet/minecraft/item/Item;I)V"))
     private void handleDisableShield(ItemCooldownManager instance, Item item, int duration, Operation<Void> original) {
         for(Item registryEntry : UniqueItemRegistry.SHIELD.getValues()) {
-            int disableTime = duration;
-            if(registryEntry instanceof ICustomShieldDisableCooldown) {
-                disableTime = ((ICustomShieldDisableCooldown) registryEntry).getShieldCooldown();
+            int disableTime;
+            if(registryEntry instanceof ShieldCooldownSettings) {
+                disableTime = ((ShieldCooldownSettings) registryEntry).getDisableCooldown();
+            } else {
+                disableTime = duration;
             }
             original.call(instance, registryEntry, disableTime);
         }
