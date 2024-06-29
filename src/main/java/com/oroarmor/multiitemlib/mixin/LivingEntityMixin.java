@@ -24,6 +24,7 @@
 
 package com.oroarmor.multiitemlib.mixin;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.oroarmor.multiitemlib.api.ShieldCooldownSettings;
@@ -31,8 +32,6 @@ import com.oroarmor.multiitemlib.api.UniqueItemRegistry;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Constant;
-import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
@@ -45,10 +44,10 @@ public class LivingEntityMixin {
 
     @WrapOperation(method = "tickFallFlying", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z"))
     private boolean handleElytra(ItemStack instance, Item item, Operation<Boolean> original) {
-        return UniqueItemRegistry.ELYTRA.isItemInRegistry(instance.getItem());
+        return UniqueItemRegistry.ELYTRA.isItemInRegistry(instance.getItem()) || original.call(instance, item);
     }
 
-    @ModifyConstant(method = "isBlocking", constant = @Constant(intValue = 5))
+    @ModifyExpressionValue(method = "isBlocking", at = @At(value = "CONSTANT", args = "intValue=5"))
     private int getShieldHoldDelay(int constant) {
         if (activeItemStack.getItem() instanceof ShieldCooldownSettings shield) {
             return shield.getRaiseCooldown(activeItemStack);

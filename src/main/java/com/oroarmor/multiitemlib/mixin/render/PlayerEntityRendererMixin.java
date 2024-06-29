@@ -24,26 +24,20 @@
 
 package com.oroarmor.multiitemlib.mixin.render;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.oroarmor.multiitemlib.api.UniqueItemRegistry;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.entity.PlayerEntityRenderer;
-import net.minecraft.client.render.entity.model.BipedEntityModel;
-import net.minecraft.item.CrossbowItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Hand;
 
 @Mixin(PlayerEntityRenderer.class)
 public class PlayerEntityRendererMixin {
-    @Inject(method = "getArmPose", at = @At("HEAD"), cancellable = true)
-    private static void getArmPose(AbstractClientPlayerEntity abstractClientPlayerEntity, Hand hand, CallbackInfoReturnable<BipedEntityModel.ArmPose> cir) {
-        ItemStack itemStack = abstractClientPlayerEntity.getStackInHand(hand);
-        if (!abstractClientPlayerEntity.handSwinging && UniqueItemRegistry.CROSSBOW.isItemInRegistry(itemStack.getItem()) && CrossbowItem.isCharged(itemStack)) {
-            cir.setReturnValue(BipedEntityModel.ArmPose.CROSSBOW_HOLD);
-        }
+    @WrapOperation(method = "getArmPose", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z", ordinal = 0))
+    private static boolean getArmPose(ItemStack instance, Item item, Operation<Boolean> original) {
+        return  UniqueItemRegistry.CROSSBOW.isItemInRegistry(instance.getItem()) || original.call(instance, item);
     }
 }

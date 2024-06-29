@@ -38,6 +38,6 @@ import net.minecraft.item.ItemStack;
 public class FishingBobberEntityRendererMixin {
     @WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z"))
     private boolean render(ItemStack instance, Item item, Operation<Boolean> original) {
-        return UniqueItemRegistry.FISHING_ROD.isItemInRegistry(instance.getItem());
+        return UniqueItemRegistry.FISHING_ROD.isItemInRegistry(instance.getItem()) || original.call(instance, item);
     }
 }

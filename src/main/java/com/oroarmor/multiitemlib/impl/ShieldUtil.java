@@ -42,13 +42,16 @@ public final class ShieldUtil {
      * @param shield          the shield stack
      */
     public static void addShieldCooldown(ItemCooldownManager cooldownManager, int duration, Operation<Void> original, ItemStack shield) {
-        for (Item registryEntry : UniqueItemRegistry.SHIELD.getValues()) {
-            int disableTime = duration;
-            if (registryEntry instanceof ShieldCooldownSettings) {
-                disableTime = ((ShieldCooldownSettings) registryEntry).getDisableCooldown(shield);
-            }
+        int disableTime = duration;
+        if (shield.getItem() instanceof ShieldCooldownSettings item) {
+            disableTime = item.getDisableCooldown(shield);
 
-            original.call(cooldownManager, registryEntry, disableTime);
+            if (item.cooldownAffectsOtherShields()) {
+                for (Item registryEntry : UniqueItemRegistry.SHIELD.getValues()) {
+                    original.call(cooldownManager, registryEntry, disableTime);
+                }
+            }
         }
+        original.call(cooldownManager, shield.getItem(), disableTime);
     }
 }

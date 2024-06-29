@@ -39,6 +39,6 @@ public class CapeFeatureRendererMixin {
     @WrapOperation(method = "render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;ILnet/minecraft/client/network/AbstractClientPlayerEntity;FFFFFF)V",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z"))
     private boolean isAcceptableItem(ItemStack instance, Item item, Operation<Boolean> original) {
-        return UniqueItemRegistry.ELYTRA.isItemInRegistry(instance.getItem());
+        return UniqueItemRegistry.ELYTRA.isItemInRegistry(instance.getItem()) || original.call(instance, item);
     }
 }

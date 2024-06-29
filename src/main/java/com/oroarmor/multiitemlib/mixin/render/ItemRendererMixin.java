@@ -44,7 +44,7 @@ public abstract class ItemRendererMixin {
                     ordinal = 0)
     )
     private boolean renderItemTrident0(ItemStack instance, Item item, Operation<Boolean> original) {
-        return isTrident(instance);
+        return isTrident(instance) || original.call(instance, item);
     }
 
     @WrapOperation(
@@ -54,7 +54,7 @@ public abstract class ItemRendererMixin {
                     ordinal = 2)
     )
     private boolean renderItemTrident2(ItemStack instance, Item item, Operation<Boolean> original) {
-        return isTrident(instance);
+        return isTrident(instance) || original.call(instance, item);
     }
 
     @WrapOperation(
@@ -64,7 +64,7 @@ public abstract class ItemRendererMixin {
                     ordinal = 0)
     )
     private boolean getModelTrident(ItemStack instance, Item item, Operation<Boolean> original) {
-        return isTrident(instance);
+        return isTrident(instance) || original.call(instance, item);
     }
 
     @Unique

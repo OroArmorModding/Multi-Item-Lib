@@ -31,11 +31,19 @@ public interface ShieldCooldownSettings {
     /**
      * Returns the shield disable cooldown, such as when attacked by an axe.
      *
-     * @param shieldStack the stack for the shield
+     * @param shield the stack for the shield
      * @return the number of ticks to disable the shield
      */
-    default int getDisableCooldown(ItemStack shieldStack) {
+    default int getDisableCooldown(ItemStack shield) {
         return 100;
+    }
+
+    /**
+     * Returns whether the cooldown for this shield affects all other shields.
+     * @return {@code true} when it affects other cooldowns, {@code false} otherwise
+     */
+    default boolean cooldownAffectsOtherShields() {
+        return true;
     }
 
     /**

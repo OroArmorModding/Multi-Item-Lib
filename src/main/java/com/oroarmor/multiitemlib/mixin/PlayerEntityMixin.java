@@ -47,7 +47,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 
     @WrapOperation(method = "damageShield(F)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z"))
     private boolean handleShieldDamage(ItemStack instance, Item item, Operation<Boolean> original) {
-        return UniqueItemRegistry.SHIELD.isItemInRegistry(instance.getItem());
+        return UniqueItemRegistry.SHIELD.isItemInRegistry(instance.getItem()) || original.call(instance, item);
     }
 
     @WrapOperation(method = "disableShield", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/ItemCooldownManager;set(Lnet/minecraft/item/Item;I)V"))
@@ -57,6 +57,6 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 
     @WrapOperation(method = "checkFallFlying", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z"))
     private boolean handleDisableShield(ItemStack instance, Item item, Operation<Boolean> original) {
-        return UniqueItemRegistry.ELYTRA.isItemInRegistry(instance.getItem());
+        return UniqueItemRegistry.ELYTRA.isItemInRegistry(instance.getItem()) || original.call(instance, item);
     }
 }

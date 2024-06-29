@@ -39,6 +39,6 @@ import net.minecraft.item.ItemStack;
 public class EntityInteractShearsMixin {
     @WrapOperation(method = "interactMob", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z"))
     private boolean interactMob(ItemStack instance, Item item, Operation<Boolean> original) {
-        return UniqueItemRegistry.SHEARS.isItemInRegistry(instance.getItem());
+        return UniqueItemRegistry.SHEARS.isItemInRegistry(instance.getItem()) || original.call(instance, item);
     }
 }

@@ -33,17 +33,25 @@ import org.spongepowered.asm.mixin.injection.At;
 import net.minecraft.client.render.item.HeldItemRenderer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 
 @Mixin(HeldItemRenderer.class)
 public class HeldItemRendererMixin {
     @WrapOperation(method = "renderFirstPersonItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z", ordinal = 1))
     private boolean renderFirstPersonItem(ItemStack instance, Item item, Operation<Boolean> original) {
-        return UniqueItemRegistry.CROSSBOW.isItemInRegistry(instance.getItem());
+        return UniqueItemRegistry.CROSSBOW.isItemInRegistry(instance.getItem()) || original.call(instance, item);
     }
 
     @WrapOperation(method = "getHandRenderType", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z"))
     private static boolean getHandRenderType(ItemStack instance, Item item, Operation<Boolean> original) {
-        return UniqueItemRegistry.BOW.isItemInRegistry(instance.getItem())
-               || UniqueItemRegistry.CROSSBOW.isItemInRegistry(instance.getItem());
+        if (item == Items.BOW) {
+            return UniqueItemRegistry.BOW.isItemInRegistry(instance.getItem())
+                   || original.call(instance, item);
+        } else if (item == Items.CROSSBOW) {
+            return UniqueItemRegistry.CROSSBOW.isItemInRegistry(instance.getItem())
+                   || original.call(instance, item);
+        }
+
+        return original.call(instance, item);
     }
 }
