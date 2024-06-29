@@ -22,22 +22,29 @@
  * SOFTWARE.
  */
 
-package com.oroarmor.multiitemlib.mixin;
+package com.oroarmor.multiitemlib.api;
 
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import com.oroarmor.multiitemlib.api.UniqueItemRegistry;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-
-import net.minecraft.enchantment.EfficiencyEnchantment;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-@Mixin(EfficiencyEnchantment.class)
-public class EfficiencyEnchantmentMixin {
-    @WrapOperation(method = "isAcceptableItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z"))
-    private boolean isAcceptableItem(ItemStack instance, Item item, Operation<Boolean> original) {
-        return UniqueItemRegistry.SHEARS.isItemInRegistry(instance.getItem());
+public interface ShieldCooldownSettings {
+
+    /**
+     * Returns the shield disable cooldown, such as when attacked by an axe.
+     *
+     * @param shieldStack the stack for the shield
+     * @return the number of ticks to disable the shield
+     */
+    default int getDisableCooldown(ItemStack shieldStack) {
+        return 100;
+    }
+
+    /**
+     * Returns how long it takes for the shield to be raised.
+     *
+     * @param shield the stack for the shield
+     * @return the number of ticks before the shield is raised
+     */
+    default int getRaiseCooldown(ItemStack shield) {
+        return 5;
     }
 }

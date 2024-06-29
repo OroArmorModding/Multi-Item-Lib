@@ -7,6 +7,9 @@
   "authors": [
     "OroArmor"
   ],
+  "contributors": [
+    "Roadhog360"
+  ],
   "contact": {
     "sources": "https://github.com/OroArmor/Multi-Item-Lib/",
     "issues": "https://github.com/OroArmor/Multi-Item-Lib/issues"
@@ -20,7 +23,7 @@
     "multi-item-lib.mixins.json"
   ],
   "depends": {
-    "minecraft": ">=1.19.4"
+    "minecraft": [">=1.19.4", "<=1.20.4"]
   },
   "breaks": {
     "bow_api": "*"

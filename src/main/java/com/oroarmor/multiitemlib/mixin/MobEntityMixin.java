@@ -27,17 +27,40 @@ package com.oroarmor.multiitemlib.mixin;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.oroarmor.multiitemlib.api.UniqueItemRegistry;
+import com.oroarmor.multiitemlib.impl.ShieldUtil;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.enchantment.EfficiencyEnchantment;
+import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.entity.player.ItemCooldownManager;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-@Mixin(EfficiencyEnchantment.class)
-public class EfficiencyEnchantmentMixin {
-    @WrapOperation(method = "isAcceptableItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z"))
-    private boolean isAcceptableItem(ItemStack instance, Item item, Operation<Boolean> original) {
-        return UniqueItemRegistry.SHEARS.isItemInRegistry(instance.getItem());
+@Mixin(MobEntity.class)
+public class MobEntityMixin {
+    @Unique
+    ThreadLocal<ItemStack> shieldStack = new ThreadLocal<>();
+
+    @Unique
+    ThreadLocal<ItemStack> attackingStack = new ThreadLocal<>();
+
+    @Inject(method = "disablePlayerShield", at = @At("HEAD"))
+    public void captureItemStacks(PlayerEntity player, ItemStack mobStack, ItemStack playerStack, CallbackInfo ci) {
+        shieldStack.set(playerStack);
+        attackingStack.set(mobStack);
+    }
+
+    @WrapOperation(method = "disablePlayerShield", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z"))
+    public boolean allowMoreShields(ItemStack instance, Item item, Operation<Boolean> original) {
+        return UniqueItemRegistry.SHIELD.isItemInRegistry(instance.getItem());
+    }
+
+    @WrapOperation(method = "disablePlayerShield", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/ItemCooldownManager;set(Lnet/minecraft/item/Item;I)V"))
+    private void handleDisableShield(ItemCooldownManager instance, Item item, int duration, Operation<Void> original) {
+        ShieldUtil.addShieldCooldown(instance, duration, original, this.shieldStack.get());
     }
 }

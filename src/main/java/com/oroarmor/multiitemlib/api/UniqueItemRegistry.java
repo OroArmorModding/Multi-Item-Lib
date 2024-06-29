@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2021 OroArmor (Eli Orona)
+ * Copyright (c) 2021-2024 OroArmor (Eli Orona)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,6 +24,8 @@
 
 package com.oroarmor.multiitemlib.api;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -58,6 +60,10 @@ public final class UniqueItemRegistry {
      * The {@link UniqueItemRegistry} for tridents. Allows for some correct rendering. Mixins will be needed for full correct rendering.
      */
     public static final UniqueItemRegistry TRIDENT = new UniqueItemRegistry(Items.TRIDENT);
+    /**
+     * The {@link UniqueItemRegistry} for elytras. Allows for some correct rendering. Mixins will be needed for full correct rendering.
+     */
+    public static final UniqueItemRegistry ELYTRA = new UniqueItemRegistry(Items.ELYTRA);
 
     private final Set<Item> itemList;
 
@@ -82,5 +88,9 @@ public final class UniqueItemRegistry {
 
     public boolean isItemInRegistry(Item item) {
         return itemList.contains(item);
+    }
+
+    public Collection<Item> getValues() {
+        return Collections.unmodifiableSet(itemList);
     }
 }

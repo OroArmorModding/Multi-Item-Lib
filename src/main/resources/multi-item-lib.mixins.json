@@ -8,12 +8,16 @@
     "EfficiencyEnchantmentMixin",
     "EntityInteractShearsMixin",
     "FishBobberEntityMixin",
+    "LivingEntityMixin",
+    "MobEntityMixin",
     "MooshroomEntityInteractShearsMixin",
     "PlayerEntityMixin",
     "PumpkinBlockMixin",
     "TripwireBlockMixin"
   ],
   "client": [
+    "ClientPlayerEntityMixin",
+    "render.CapeFeatureRendererMixin",
     "render.FishingBobberEntityRendererMixin",
     "render.HeldItemRendererMixin",
     "render.ItemRendererMixin",
