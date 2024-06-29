@@ -61,7 +61,7 @@ public final class UniqueItemRegistry {
      */
     public static final UniqueItemRegistry TRIDENT = new UniqueItemRegistry(Items.TRIDENT);
     /**
-     * The {@link UniqueItemRegistry} for tridents. Allows for some correct rendering. Mixins will be needed for full correct rendering.
+     * The {@link UniqueItemRegistry} for elytras. Allows for some correct rendering. Mixins will be needed for full correct rendering.
      */
     public static final UniqueItemRegistry ELYTRA = new UniqueItemRegistry(Items.ELYTRA);
 
@@ -90,7 +90,7 @@ public final class UniqueItemRegistry {
         return itemList.contains(item);
     }
 
-    public Set<Item> getValues() {
+    public Collection<Item> getValues() {
         return Collections.unmodifiableSet(itemList);
     }
 }

@@ -29,7 +29,6 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.oroarmor.multiitemlib.api.UniqueItemRegistry;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
 
 import net.minecraft.client.render.item.HeldItemRenderer;
 import net.minecraft.item.Item;
@@ -45,6 +44,6 @@ public class HeldItemRendererMixin {
     @WrapOperation(method = "getHandRenderType", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z"))
     private static boolean getHandRenderType(ItemStack instance, Item item, Operation<Boolean> original) {
         return UniqueItemRegistry.BOW.isItemInRegistry(instance.getItem())
-                || UniqueItemRegistry.CROSSBOW.isItemInRegistry(instance.getItem());
+               || UniqueItemRegistry.CROSSBOW.isItemInRegistry(instance.getItem());
     }
 }

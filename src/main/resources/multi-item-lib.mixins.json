@@ -16,8 +16,8 @@
     "TripwireBlockMixin"
   ],
   "client": [
-    "CapeFeatureRendererMixin",
     "ClientPlayerEntityMixin",
+    "render.CapeFeatureRendererMixin",
     "render.FishingBobberEntityRendererMixin",
     "render.HeldItemRendererMixin",
     "render.ItemRendererMixin",

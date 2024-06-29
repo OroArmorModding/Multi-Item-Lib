@@ -29,7 +29,6 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.oroarmor.multiitemlib.api.UniqueItemRegistry;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
 
 import net.minecraft.entity.passive.MooshroomEntity;
 import net.minecraft.item.Item;

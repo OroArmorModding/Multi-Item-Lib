@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2021 OroArmor (Eli Orona)
+ * Copyright (c) 2024 OroArmor (Eli Orona)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,22 +22,33 @@
  * SOFTWARE.
  */
 
-package com.oroarmor.multiitemlib.mixin;
+package com.oroarmor.multiitemlib.impl;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.oroarmor.multiitemlib.api.ShieldCooldownSettings;
 import com.oroarmor.multiitemlib.api.UniqueItemRegistry;
-import net.minecraft.client.render.entity.feature.CapeFeatureRenderer;
+
+import net.minecraft.entity.player.ItemCooldownManager;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
 
-@Mixin(CapeFeatureRenderer.class)
-public class CapeFeatureRendererMixin {
-    @WrapOperation(method = "render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;ILnet/minecraft/client/network/AbstractClientPlayerEntity;FFFFFF)V",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z"))
-    private boolean isAcceptableItem(ItemStack instance, Item item, Operation<Boolean> original) {
-        return UniqueItemRegistry.ELYTRA.isItemInRegistry(instance.getItem());
+public final class ShieldUtil {
+    /**
+     * Sets the shield cooldown for all shields.
+     *
+     * @param cooldownManager the item cooldown manager
+     * @param duration        the original duration (100 ticks)
+     * @param original        the original method for the cooldown
+     * @param shield          the shield stack
+     */
+    public static void addShieldCooldown(ItemCooldownManager cooldownManager, int duration, Operation<Void> original, ItemStack shield) {
+        for (Item registryEntry : UniqueItemRegistry.SHIELD.getValues()) {
+            int disableTime = duration;
+            if (registryEntry instanceof ShieldCooldownSettings) {
+                disableTime = ((ShieldCooldownSettings) registryEntry).getDisableCooldown(shield);
+            }
+
+            original.call(cooldownManager, registryEntry, disableTime);
+        }
     }
 }

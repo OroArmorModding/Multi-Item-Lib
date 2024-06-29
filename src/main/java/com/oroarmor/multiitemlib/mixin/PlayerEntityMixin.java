@@ -26,21 +26,24 @@ package com.oroarmor.multiitemlib.mixin;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import com.oroarmor.multiitemlib.api.ShieldCooldownSettings;
 import com.oroarmor.multiitemlib.api.UniqueItemRegistry;
-import net.minecraft.entity.player.ItemCooldownManager;
-import org.spongepowered.asm.mixin.Final;
+import com.oroarmor.multiitemlib.impl.ShieldUtil;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.ItemCooldownManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 
 @Mixin(PlayerEntity.class)
-public class PlayerEntityMixin {
-    @Shadow @Final private ItemCooldownManager itemCooldownManager;
+public abstract class PlayerEntityMixin extends LivingEntity {
+    protected PlayerEntityMixin(EntityType<? extends LivingEntity> entityType, World world) {
+        super(entityType, world);
+    }
 
     @WrapOperation(method = "damageShield(F)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z"))
     private boolean handleShieldDamage(ItemStack instance, Item item, Operation<Boolean> original) {
@@ -49,15 +52,7 @@ public class PlayerEntityMixin {
 
     @WrapOperation(method = "disableShield", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/ItemCooldownManager;set(Lnet/minecraft/item/Item;I)V"))
     private void handleDisableShield(ItemCooldownManager instance, Item item, int duration, Operation<Void> original) {
-        for(Item registryEntry : UniqueItemRegistry.SHIELD.getValues()) {
-            int disableTime;
-            if(registryEntry instanceof ShieldCooldownSettings) {
-                disableTime = ((ShieldCooldownSettings) registryEntry).getDisableCooldown();
-            } else {
-                disableTime = duration;
-            }
-            original.call(instance, registryEntry, disableTime);
-        }
+        ShieldUtil.addShieldCooldown(instance, duration, original, this.activeItemStack);
     }
 
     @WrapOperation(method = "checkFallFlying", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z"))

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2021 OroArmor (Eli Orona)
+ * Copyright (c) 2024 OroArmor (Eli Orona)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,18 +24,27 @@
 
 package com.oroarmor.multiitemlib.api;
 
+import net.minecraft.item.ItemStack;
+
 public interface ShieldCooldownSettings {
 
     /**
-     * If the shield is disabled by an axe, how long should the cooldown last for?
-     * Set to 0 to make the shield never suffer from being disabled by an axe. (Other shields in your inventory still get disabled)
-     * Default value is 100.
+     * Returns the shield disable cooldown, such as when attacked by an axe.
+     *
+     * @param shieldStack the stack for the shield
+     * @return the number of ticks to disable the shield
      */
-    int getDisableCooldown();
+    default int getDisableCooldown(ItemStack shieldStack) {
+        return 100;
+    }
 
     /**
-     * How many ticks should it take between right clicking the shield, and its protection being effective?
-     * Default value is 5.
+     * Returns how long it takes for the shield to be raised.
+     *
+     * @param shield the stack for the shield
+     * @return the number of ticks before the shield is raised
      */
-    int getRaiseCooldown();
+    default int getRaiseCooldown(ItemStack shield) {
+        return 5;
+    }
 }
