@@ -1,3 +1,10 @@
+Version 1.7.0
+
+- Improved mixins more
+- Updated oro-gradle-plugin
+- Improved shield cooldown compatibility
+- Improvements from Roadhog360 and LlamaLad7
+----
 Version 1.6.3
 
 - Tweaked mixins to be more compatible.
